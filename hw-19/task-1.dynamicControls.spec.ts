@@ -23,7 +23,7 @@ test.describe("[UI] Dynamic Controls", async () => {
         const mainTitle = page.getByRole("heading", { name: "Dynamic Controls" })
         const paragraphText = page.locator("div.example > p");
         const subheader = page.getByRole("heading", { name: "Remove/add" });
-
+        
         await expect(mainTitle).toHaveText("Dynamic Controls");
         await expect (paragraphText).toHaveText("This example demonstrates when elements (e.g., checkbox, input field, etc.) are changed asynchronously.")
         await expect(subheader).toHaveText("Remove/add");
