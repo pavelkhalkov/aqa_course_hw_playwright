@@ -1,0 +1,24 @@
+{
+  "name": "aqa-3-playwright",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:ui": "npx playwright test",
+    "ui-mode": "npx playwright test --ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.14.1"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "dotenv": "^16.5.0",
+    "lodash": "^4.17.21"
+  }
+}
