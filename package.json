@@ -1,0 +1,26 @@
+{
+  "name": "aqa_course_hw_playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:ui": "npx playwright test",
+    "ui-mode": "npx playwright test --ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pavelkhalkov/aqa_course_hw_playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pavelkhalkov/aqa_course_hw_playwright/issues"
+  },
+  "homepage": "https://github.com/pavelkhalkov/aqa_course_hw_playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.6.2"
+  }
+}
