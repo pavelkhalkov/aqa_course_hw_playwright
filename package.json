@@ -21,6 +21,10 @@
   "homepage": "https://github.com/pavelkhalkov/aqa_course_hw_playwright#readme",
   "devDependencies": {
     "@playwright/test": "^1.55.1",
+    "@types/lodash": "^4.17.20",
     "@types/node": "^24.6.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
