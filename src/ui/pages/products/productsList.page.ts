@@ -2,7 +2,7 @@ import { IProductInTable } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ProductDetailsModal } from "./details.modal"
- 
+
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductDetailsModal(this.page);
 
@@ -28,7 +28,7 @@ export class ProductsListPage extends SalesPortalPage {
   }
 
    async sortByCreatedDesc() {
-    const headerList = this.page.locator("th", { hasText: "Created On" });
+     const headerList = this.page.locator("th", { hasText: "Created On" });
     await headerList.click(); 
   }
 
