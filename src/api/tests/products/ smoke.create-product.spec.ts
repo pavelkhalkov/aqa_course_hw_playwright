@@ -28,6 +28,16 @@ test.describe("[API] [Smoke] [Create Product]", () => {
   let id = "";
   let token = "";
 
+   test.afterEach(async ({ request }) => {
+    const response = await request.delete(`${apiConfig.baseURL}${apiConfig.endpoints.products}/${id}`, {
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    expect(response.status()).toBe(STATUS_CODES.DELETED);
+  });
+
   //Sign In
   test("Should login with valid credentials", async ({ request }) => {
     const loginResponse = await request.post(
