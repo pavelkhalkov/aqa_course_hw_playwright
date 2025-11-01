@@ -85,5 +85,5 @@ test.describe("[API] [Sales Portal] [Products]", () => {
       });
       expect.soft(response.status()).toBe(STATUS_CODES.DELETED);
     }
-  });
+   });
 });
