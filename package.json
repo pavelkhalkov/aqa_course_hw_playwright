@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/pavelkhalkov/aqa_course_hw_playwright#readme",
   "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.55.1",
     "@types/dotenv": "^6.1.1",
     "@types/lodash": "^4.17.20",

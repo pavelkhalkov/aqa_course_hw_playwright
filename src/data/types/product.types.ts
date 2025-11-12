@@ -27,3 +27,12 @@ export interface IProductResponse extends IResponseFields {
 export interface IProductsResponse extends IResponseFields {
   Products: IProductFromResponse[];
 }
+
+export interface ICreateValidDataProduct {
+  testName: string;
+  validCreationProductData: IProduct;
+}
+
+
+
+
