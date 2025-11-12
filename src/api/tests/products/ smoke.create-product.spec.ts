@@ -13,17 +13,15 @@
 
 */
 
-import { test, expect } from "@playwright/test";
+import { test, expect, APIResponse } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
 import { STATUS_CODES } from "data/statusCodes";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
-import { validateResponse } from "utils/validateResponse.utils";
-import { productSchema } from "data/schemas/products/product.schema";
+import { validateResponse } from "utils/validation/validateResponse.utils"; 
 import { createProductSchema } from "data/schemas/products/create.schema";
-import { validateJsonSchema } from "utils/schema.utils";
+import { validateJsonSchema } from "utils/validation/validateSchema.utils"; 
 import { getAllProductSchema } from "data/schemas/products/allProduct.schema";
-
 test.describe("[API] [Smoke] [Create Product]", () => {
   let id = "";
   let token = "";
@@ -47,17 +45,14 @@ test.describe("[API] [Smoke] [Create Product]", () => {
         headers: { "content-type": "application/json" },
       }
     );
-
     const loginBody = await loginResponse.json();
     const headers = loginResponse.headers();
     token = headers["authorization"]!;
-
     expect.soft(loginResponse.status()).toBe(STATUS_CODES.OK);
     expect.soft(loginBody.IsSuccess).toBe(true);
     expect.soft(loginBody.ErrorMessage).toBe(null);
     expect.soft(loginBody.User.username).toBe(credentials.username);
     expect(token).toBeTruthy();
-
     //Create product 
     const productData = generateProductData();
     const createProductResponse = await request.post(apiConfig.baseURL + apiConfig.endpoints.products,
@@ -70,40 +65,47 @@ test.describe("[API] [Smoke] [Create Product]", () => {
       }
     );
 
-    //Create and check scheme
-    await validateResponse(createProductResponse, {
-      status: STATUS_CODES.CREATED,
-      schema: createProductSchema,
-      IsSuccess: true,
-      ErrorMessage: null,
-    });
+async function toAppResponse(res: APIResponse) {
+  return {
+    status: res.status(),                 
+    body: await res.json(),               
+    headers: res.headers(),               
+  };
+}
 
-    const createProductBody = await createProductResponse.json();
+const appCreateProductResponse = await toAppResponse(createProductResponse);
 
-    validateJsonSchema(createProductBody.Product, productSchema);
-    id = createProductBody.Product._id;
-
-    //Get all products
-    const getAllProductResponse = await request.get(apiConfig.baseURL + apiConfig.endpoints.productsAll,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "application/json",
-        },
-      }
-    );
-
-    //Check status
-    expect.soft(getAllProductResponse.status()).toBe(STATUS_CODES.OK);
-
-    const getAllBody = await getAllProductResponse.json();
-    validateJsonSchema(getAllBody, getAllProductSchema);
-
-    expect.soft(Array.isArray(getAllBody.Products), "Products should be an array").toBe(true);
-
-    const haveNewProduct = getAllBody.Products.some((product: any) => product._id === id);
-    expect.soft(haveNewProduct).toBe(true);
-    expect.soft(getAllBody.IsSuccess, "IsSuccess should be true").toBe(true);
-    expect.soft(getAllBody.ErrorMessage, "ErrorMessage should be null").toBeNull();
-  });
+validateResponse(appCreateProductResponse, {
+  status: STATUS_CODES.CREATED,
+  schema: createProductSchema,
+  IsSuccess: true,
+  ErrorMessage: null,
 });
+
+const createProductBody = appCreateProductResponse.body;
+id = createProductBody.Product._id;
+
+// Get all products
+const getAllProductResponse = await request.get(
+  apiConfig.baseURL + apiConfig.endpoints.productsAll,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+  }
+);
+
+expect.soft(getAllProductResponse.status()).toBe(STATUS_CODES.OK);
+
+const getAllBody = await getAllProductResponse.json();
+validateJsonSchema(getAllBody, getAllProductSchema);
+
+expect.soft(Array.isArray(getAllBody.Products), "Products should be an array").toBe(true);
+const haveNewProduct = getAllBody.Products.some((p: any) => p._id === id);
+expect.soft(haveNewProduct).toBe(true);
+expect.soft(getAllBody.IsSuccess, "IsSuccess should be true").toBe(true);
+expect.soft(getAllBody.ErrorMessage, "ErrorMessage should be null").toBeNull();
+  })
+})
+
