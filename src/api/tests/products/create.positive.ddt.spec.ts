@@ -25,7 +25,7 @@ import { makeUniqueName } from "data/salesPortal/products/makeUniqueName";
 import _ from "lodash";
 
 
-test.describe("[API] [Sales Portal] [Products: Positive] ", () => {
+test.describe("[API] [Sales Portal] [Product: Positive]", () => {
   let id = "";
   let token = "";
 

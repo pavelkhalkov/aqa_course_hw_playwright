@@ -15,8 +15,7 @@ import { invalidCreationProductSchema } from "data/schemas/products/invalidCreat
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createProductInvalidData } from "data/salesPortal/products/create.data.invalid";
 
-test.describe("[API] [Sales Portal] [Products] Create", () => {
-  test.describe("Negative", () => {
+test.describe("[API] [Sales Portal] [Product: Negative]", () => {
     let token = "";
 
     test.beforeEach(async ({ loginApiService }) => {
@@ -56,4 +55,4 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
       });
     }
   });
-});
+//});
