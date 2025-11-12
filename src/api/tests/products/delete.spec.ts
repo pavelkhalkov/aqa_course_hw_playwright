@@ -1,13 +1,5 @@
-import test, { expect } from "@playwright/test";
-import { apiConfig } from "config/apiConfig";
-import { credentials } from "config/env";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
-import { createProductSchema } from "data/schemas/products/create.schema";
+import { test, expect } from "fixtures/api.fixture";
 import { STATUS_CODES } from "data/statusCodes";
-import { IProductFromResponse } from "data/types/product.types";
-import { validateResponse } from "utils/validateResponse.utils";
-
-const { baseURL, endpoints } = apiConfig;
 
 test.describe("[API] [Sales Portal] [Products]", () => {
   test("Delete Product", async ({ request }) => {
@@ -86,4 +78,14 @@ test.describe("[API] [Sales Portal] [Products]", () => {
       expect.soft(response.status()).toBe(STATUS_CODES.DELETED);
     }
    });
+  test("Delete Product", async ({ loginApiService, productsApiService, productsApi }) => {
+    //arrange
+    const token = await loginApiService.loginAsAdmin();
+    const createdProduct = await productsApiService.create(token);
+    const id = createdProduct._id;
+    //act
+    const response = await productsApi.delete(id, token);
+    //assert
+    expect(response.status).toBe(STATUS_CODES.DELETED);
+  });
 });

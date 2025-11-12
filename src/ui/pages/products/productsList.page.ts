@@ -2,10 +2,12 @@ import { IProductInTable } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ProductDetailsModal } from "./details.modal"
+import { DeleteProductModal } from "./delete.modal";
 
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductDetailsModal(this.page);
-
+  readonly deleteProductModal = new DeleteProductModal(this.page)
+  
   readonly productsPageTitle = this.page.locator("h2.fw-bold");
   readonly addNewProductButton = this.page.locator('[name="add-button"]');
   readonly tableRow = this.page.locator("tbody tr");
@@ -36,14 +38,33 @@ export class ProductsListPage extends SalesPortalPage {
     return this.page.locator("table tbody tr").first();
   }
 
-  async getProductData(productName: string): Promise<IProductInTable> {
-    const [name, price, manufacturer, createdOn] = await this.tableRowByName(productName).locator("td").allInnerTexts();
-    return {
+    async clickTableAction(productName: string, action: "details" | "edit" | "delete") {
+    const buttons = {
+      edit: this.detailsButton(productName),
+      details: this.editButton(productName),
+      delete: this.deleteButton(productName),
+    };
+
+    await buttons[action].click();
+  }
+
+  async getAllProductsData(): Promise<IProductInTable[]> {
+  const rows = this.page.locator("table tbody tr");
+  const count = await rows.count();
+  const products: IProductInTable[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const cells = await rows.nth(i).locator("td").allInnerTexts();
+    const [name, price, manufacturer, createdOn] = cells;
+    products.push({
       name: name!,
       price: +price!.replace("$", ""),
       manufacturer: manufacturer! as MANUFACTURERS,
       createdOn: createdOn!,
-    };
+    });
   }
+
+  return products;
+}
 
 }
