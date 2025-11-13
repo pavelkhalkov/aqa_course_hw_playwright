@@ -8,3 +8,4 @@ node_modules/
 /playwright/.auth/
 .env
 .DS_Store
+ .npm-cache/

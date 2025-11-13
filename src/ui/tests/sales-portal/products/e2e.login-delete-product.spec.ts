@@ -1,4 +1,7 @@
 /*
+
+***HW-23***
+
 Создайте e2e тест со следующими шагами:
 1. Зайти на сайт Sales Portal
 2. Залогиниться с вашими кредами 
@@ -18,6 +21,7 @@
 - PageObject модалки удаления продукта
 - Подключить модалку в PageObject страницы Products
 - Использовать фикстуры
+
 */
 
 import { test, expect } from "fixtures/pages.fixture";
@@ -27,14 +31,15 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 
 
 test.describe("[E2E] SignIn and Product Creation", () => {
-  test("Should sign in and create new product", async ({page, signInPage, homePage, productsListPage, addNewProductPage}) => {
+  test("Should sign in and create new product", async ({page, loginPage, homePage, productsListPage, addNewProductPage}) => {
     
     //Arrange
     const productData = generateProductData();
 
     await homePage.open();
-    await signInPage.waitForOpened();
-    await signInPage.signIn(credentials);
+    await loginPage.waitForOpened()
+    await loginPage.fillCredentials(credentials);
+    await loginPage.clickLogin()
     await homePage.waitForOpened();
     await homePage.clickOnViewModule("Products");
     await productsListPage.waitForOpened();

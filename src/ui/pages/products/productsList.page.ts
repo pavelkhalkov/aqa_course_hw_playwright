@@ -3,9 +3,12 @@ import { SalesPortalPage } from "../salesPortal.page";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ProductDetailsModal } from "./details.modal"
 import { DeleteProductModal } from "./delete.modal";
+import { ConfirmationModal } from "../confirmation.modal";
 
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductDetailsModal(this.page);
+  readonly deleteModal = new ConfirmationModal(this.page);
+
   readonly deleteProductModal = new DeleteProductModal(this.page)
   
   readonly productsPageTitle = this.page.locator("h2.fw-bold");
@@ -24,6 +27,9 @@ export class ProductsListPage extends SalesPortalPage {
   readonly editButton = (productName: string) => this.tableRowByName(productName).getByTitle("Edit");
   readonly detailsButton = (productName: string) => this.tableRowByName(productName).getByTitle("Details");
   readonly deleteButton = (productName: string) => this.tableRowByName(productName).getByTitle("Delete");
+
+  readonly searchInput = this.page.locator("#search");
+  readonly searchButton = this.page.locator("#search-products");
 
   async clickAddNewProduct() {
     await this.addNewProductButton.click();
@@ -66,5 +72,19 @@ export class ProductsListPage extends SalesPortalPage {
 
   return products;
 }
+
+ async clickAction(productName: string, button: "edit" | "delete" | "details") {
+    if (button === "edit") await this.editButton(productName).click();
+    if (button === "delete") await this.deleteButton(productName).click();
+    if (button === "details") await this.detailsButton(productName).click();
+  }
+
+  async fillSearchInput(text: string) {
+    await this.searchInput.fill(text);
+  }
+
+  async clickSearch() {
+    await this.searchButton.click();
+  }
 
 }

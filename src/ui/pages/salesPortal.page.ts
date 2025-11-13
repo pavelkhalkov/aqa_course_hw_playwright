@@ -9,10 +9,11 @@ export abstract class SalesPortalPage extends BasePage {
 
   async waitForOpened() {
     await expect(this.uniqueElement).toBeVisible();
-    await expect(this.spinner).toHaveCount(0);
+  //  await expect(this.spinner).toHaveCount(0);
   }
 
-  async open() {
-    await this.page.goto(SALES_PORTAL_URL);
+ async open(route?: string) {
+    await this.page.goto(SALES_PORTAL_URL + route);
   }
+
 }

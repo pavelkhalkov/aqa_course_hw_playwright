@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from "dotenv"
+import 'tsconfig-paths/register';
+
 
 dotenv.config()
 
@@ -17,6 +19,10 @@ dotenv.config()
 export default defineConfig({
   //testDir: './src/ui/tests',
     testDir: "./src/",
+
+                 // если папка tests в корне
+  testMatch: ['**/*.spec.ts'], 
+
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
