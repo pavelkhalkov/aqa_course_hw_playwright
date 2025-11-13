@@ -20,3 +20,5 @@ export interface IResponse<T extends object | null> {
   headers: Record<string, string>;
   body: T;
 }
+
+export type SortOrder = "asc" | "desc";
