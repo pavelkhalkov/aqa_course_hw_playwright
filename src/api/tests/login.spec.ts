@@ -14,7 +14,7 @@ import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
 import { loginSchema } from "data/schemas/products/login.schema";
 import { STATUS_CODES } from "data/statusCodes";
-import { validateJsonSchema } from "utils/schema.utils";
+import { validateJsonSchema } from "utils/validation/validateSchema.utils"; 
 
 test.describe("[API] [Auth] [Login]", () => {
   test("Should successfully login with valid credentials", async ({request}) => {
