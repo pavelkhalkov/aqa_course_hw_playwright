@@ -17,4 +17,8 @@ export class HomeUIService {
       await this.productsListPage.waitForOpened();
     }
   }
+    async openAsLoggedInUser() {
+    await this.homePage.open();
+    await this.homePage.waitForOpened();
+  }
 }
