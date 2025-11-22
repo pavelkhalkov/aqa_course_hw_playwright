@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { IProduct } from "data/types/product.types";
+import { IProduct, IProductFromResponse } from "data/types/product.types";
 import { getRandomEnumValue } from "utils/enum.utils";
 import { MANUFACTURERS } from "./manufacturers";
+import { ObjectId } from "bson";
 
 export function generateProductData(params?: Partial<IProduct>): IProduct {
   return {
@@ -14,4 +15,15 @@ export function generateProductData(params?: Partial<IProduct>): IProduct {
   };
 }
 
-
+export function generateProductResponseData(overrides: Partial<IProduct> = {}): IProductFromResponse {
+  const base = generateProductData(overrides);
+  return {
+    _id: new ObjectId().toHexString(),
+    name: base.name,
+    amount: base.amount,
+    price: base.price,
+    manufacturer: base.manufacturer,
+    createdOn: new Date().toISOString(),
+    notes: base.notes ?? "",
+  };
+}

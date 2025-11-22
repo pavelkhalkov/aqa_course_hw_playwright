@@ -1,3 +1,25 @@
+/*
+
+***HW-22***
+
+Task 1
+Написать Page Object класс для страницы Sign In:
+  - email input
+  - password input
+  - login button
+  - fillCredentials method
+  - click on login button method
+
+Task 2
+Разработать е2е теста со следующими шагами:
+ - Открыть Sales Portal локально поднятый в докере
+ - Войти в приложения используя учетные данные указанные в readme к проекту
+ - Создать продукт (модуль Products)
+ - Верифицировать появившуюся нотификацию
+ - Верифицировать созданный продукт в таблице (сравнить все имеющиеся поля, продукт должен быть самым верхним)
+
+*/
+
 import test, { expect } from "@playwright/test";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
@@ -5,23 +27,25 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 import { HomePage } from "ui/pages/home.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
-import { SignInPage } from "ui/pages/signIn.page";
+import { LoginPage } from "ui/pages/signIn.page"; 
 import _ from "lodash"
 
 test.describe("[E2E] SignIn and Product Creation", () => {
   test("Should sign in and create new product", async ({ page }) => {
     
     //Arrange 
-    const signInPage = new SignInPage(page);
+    const loginPage = new LoginPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new AddNewProductPage(page);
     const productData = generateProductData();
 
     await homePage.open();
-    await signInPage.waitForOpened()
-    await signInPage.signIn(credentials);
+    await loginPage.waitForOpened()
+    await loginPage.fillCredentials(credentials);
+    await loginPage.clickLogin()
     await homePage.waitForOpened();
+
     await homePage.clickOnViewModule("Products");
     await productsListPage.waitForOpened();
 
