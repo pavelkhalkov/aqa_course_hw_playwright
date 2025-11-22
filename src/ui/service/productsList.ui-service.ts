@@ -1,17 +1,20 @@
 import { expect, Page } from "@playwright/test";
-import { IProductDetails } from "data/types/product.types";
+import { IProduct, IProductDetails, IProductInTable } from "data/types/product.types";
 import _ from "lodash";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { convertToFullDateAndTime } from "utils/date.utils";
+import { EditProductPage } from "ui/pages/editProduct.page";
 
 export class ProductsListUIService {
   productsListPage: ProductsListPage;
   addNewProductPage: AddNewProductPage;
+  editProductPage: EditProductPage;
 
   constructor(private page: Page) {
     this.productsListPage = new ProductsListPage(page);
     this.addNewProductPage = new AddNewProductPage(page);
+    this.editProductPage = new EditProductPage(page);
   }
 
   async openAddNewProductPage() {
@@ -22,6 +25,11 @@ export class ProductsListUIService {
   async openDetailsModal(productName: string) {
     await this.productsListPage.detailsButton(productName).click();
     await this.productsListPage.detailsModal.waitForOpened();
+  }
+  
+  async openEditModal(productName: string) {
+    await this.productsListPage.editButton(productName).click();
+    await this.editProductPage.waitForOpened();
   }
 
   async openDeleteModal(productName: string) {
@@ -45,6 +53,14 @@ export class ProductsListUIService {
   async open() {
     await this.productsListPage.open("products");
     await this.productsListPage.waitForOpened();
+  }
+
+  assertProductTableDataGenerated(actual: IProductInTable, expected: IProduct) {
+    expect(_.omit(actual, ['createdOn'])).toEqual(_.omit(expected, ['amount', 'notes']));
+  }
+
+  assertDetailsDataGenerated(actual: IProductDetails, expected: IProduct) {
+    expect(_.omit(actual, ['createdOn'])).toEqual(expected);
   }
 
   assertDetailsData(actual: IProductDetails, expected: IProductDetails) {
