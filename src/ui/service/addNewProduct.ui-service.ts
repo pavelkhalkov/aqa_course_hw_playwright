@@ -5,6 +5,7 @@ import { STATUS_CODES } from "data/statusCodes";
 import { IProduct, IProductResponse } from "data/types/product.types";
 import _ from "lodash";
 import { AddNewProductPage, ProductsListPage } from "ui/pages/products";
+import { logStep } from "utils/report/logStep.utils";
 
 export class AddNewProductUIService {
   addNewProductPage: AddNewProductPage;
@@ -15,11 +16,13 @@ export class AddNewProductUIService {
     this.productsListPage = new ProductsListPage(page);
   }
 
+  @logStep("Open add new product page")
   async open() {
     await this.addNewProductPage.open("products/add");
     await this.addNewProductPage.waitForOpened();
   }
 
+   @logStep("Create a product through user interface")
   async create(productData?: Partial<IProduct>) {
     const data = generateProductData(productData);
     await this.addNewProductPage.fillForm(data);

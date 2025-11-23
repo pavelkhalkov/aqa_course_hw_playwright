@@ -14,10 +14,14 @@ import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
 import { loginSchema } from "data/schemas/products/login.schema";
 import { STATUS_CODES } from "data/statusCodes";
+import { TAGS } from "data/tags";
 import { validateJsonSchema } from "utils/validation/validateSchema.utils"; 
 
 test.describe("[API] [Auth] [Login]", () => {
-  test("Should successfully login with valid credentials", async ({request}) => {
+  test("Should successfully login with valid credentials", {
+    tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API]
+  },
+    async ({request}) => {
     const loginResponse = await request.post(apiConfig.baseURL + apiConfig.endpoints.login,
       {
         data: credentials,

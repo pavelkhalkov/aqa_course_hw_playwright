@@ -2,6 +2,7 @@ import { IApiClient } from "api/apiClients/types";
 import { apiConfig } from "config/apiConfig";
 import { IRequestOptions } from "data/types/core.types";
 import { IProduct, IProductResponse, IProductsResponse } from "data/types/product.types";
+import { logStep } from "utils/report/logStep.utils";
 
 export class ProductsApi {
   constructor(private apiClient: IApiClient) {}
@@ -12,6 +13,7 @@ export class ProductsApi {
   //get with pagination
   //delete
 
+  @logStep("POST /api/products")
   async create(product: IProduct, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL, //backend url
@@ -26,6 +28,7 @@ export class ProductsApi {
     return await this.apiClient.send<IProductResponse>(options);
   }
 
+  @logStep("PUT /api/products/{id}")
   async update(_id: string, newProduct: IProduct, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL,
@@ -41,6 +44,7 @@ export class ProductsApi {
     return await this.apiClient.send<IProductResponse>(options);
   }
 
+  @logStep("GET /api/products/{id}")
   async getById(_id: string, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL,
@@ -55,6 +59,7 @@ export class ProductsApi {
     return await this.apiClient.send<IProductResponse>(options);
   }
 
+  @logStep("GET /api/products/all")
   async getAll(token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL,
@@ -69,6 +74,7 @@ export class ProductsApi {
     return await this.apiClient.send<IProductsResponse>(options);
   }
 
+  @logStep("DELETE /api/products")
   async delete(_id: string, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseURL,

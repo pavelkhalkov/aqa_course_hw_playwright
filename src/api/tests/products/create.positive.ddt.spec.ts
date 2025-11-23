@@ -23,6 +23,7 @@ import { validateResponse } from "utils/validation/validateResponse.utils";
 import { regValidTestData } from "data/salesPortal/products/create.data.valid";
 import { makeUniqueName } from "data/salesPortal/products/makeUniqueName";
 import _ from "lodash";
+import { TAGS } from "data/tags";
 
 
 test.describe("[API] [Sales Portal] [Product: Positive]", () => {
@@ -35,7 +36,10 @@ test.describe("[API] [Sales Portal] [Product: Positive]", () => {
   });
 
   regValidTestData.forEach(({ testName, validCreationProductData }) => {
-    test(testName, async ({ loginApiService, productsApi }) => {
+    test(testName, {
+      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API, TAGS.PRODUCTS]
+      },
+      async ({ loginApiService, productsApi }) => {
       token = await loginApiService.loginAsAdmin();
 
        let productData = validCreationProductData;
