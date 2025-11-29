@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:ui": "npx playwright test",
-    "ui-mode": "npx playwright test --ui"
+    "test": "npx playwright test",
+    "ui-mode": "npx playwright test --ui",
+    "test:ui:regression": "npx playwright test --project=sales-portal-ui --grep \"@regression|@smoke\"",
+    "test:ui:smoke": "npm run test -- --project=sales-portal-ui --grep @smoke",
+    "html-report-open": "npx playwright show-report",
+    "allure-report": "allure generate allure-results -o allure-report --clean",
+    "allure-report-open": "npm run allure-report && allure open allure-report"
   },
   "repository": {
     "type": "git",

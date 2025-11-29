@@ -1,3 +1,4 @@
+import { TAGS } from "data/tags";
 import { IProduct } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
 
@@ -7,8 +8,14 @@ test.describe("[Sales Portal] [Products]", () => {
 
   const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
   for (const field of fields) {
-    test(`Search by ${field} field`, async ({ loginUIService, productsApiService, productsListUIService }) => {
-      token = await loginUIService.loginAsAdmin();
+    test(`Search by ${field} field`,    {
+        tag: [TAGS.REGRESSION, TAGS.SMOKE, TAGS.VISUAL_REGRESSION, TAGS.PRODUCTS]
+      },
+      async ({ productsListPage, productsApiService, productsListUIService }) => {
+     
+      token = await productsListPage.getAuthToken();
+      await productsListPage.open()
+    
       const product = await productsApiService.create(token);
       id = product._id;
       await productsListUIService.open();

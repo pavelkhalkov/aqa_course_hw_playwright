@@ -2,6 +2,7 @@ import { test, expect } from "fixtures/api.fixture";
 import { getProductSchema } from "data/schemas/products/get.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import { validateResponse } from "utils/validation/validateResponse.utils";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products]", () => {
   let id = "";
@@ -11,7 +12,10 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     await productsApiService.delete(token, id);
   });
 
-  test("Get Product By Id", async ({ loginApiService, productsApiService, productsApi }) => {
+  test("Get Product By Id",  {
+    tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API, TAGS.PRODUCTS]
+  },
+    async ({ loginApiService, productsApiService, productsApi }) => {
     //TODO: Preconditions
     token = await loginApiService.loginAsAdmin();
     const product = await productsApiService.create(token);

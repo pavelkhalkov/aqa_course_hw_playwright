@@ -14,6 +14,7 @@ import { validateResponse } from "utils/validation/validateResponse.utils";
 import { invalidCreationProductSchema } from "data/schemas/products/invalidCreate.schema";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createProductInvalidData } from "data/salesPortal/products/create.data.invalid";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Product: Negative]", () => {
     let token = "";
@@ -23,7 +24,10 @@ test.describe("[API] [Sales Portal] [Product: Negative]", () => {
     });
 
     for (const { title, checkingData } of createProductInvalidData) {
-      test(title, async ({ productsApi }) => {
+      test(title, {
+              tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API, TAGS.PRODUCTS]
+        },
+        async ({ productsApi }) => {
         const productData = generateProductData(checkingData);
         const response = await productsApi.create(productData, token);
 

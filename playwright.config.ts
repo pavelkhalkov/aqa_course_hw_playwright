@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from "dotenv"
-import 'tsconfig-paths/register';
+//import 'tsconfig-paths/register';
 
 
 dotenv.config()
@@ -44,10 +44,27 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'], headless: true },
+        {
+      name: "setup",
+      use: { ...devices["Desktop Chrome"] },
+      testDir: "src/ui/tests/sales-portal",
+      testMatch: /\.setup\.ts/,
     },
+    {
+      name: "sales-portal-ui",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1920, height: 1080 },
+        storageState: "src/.auth/user.json",
+      },
+      dependencies: ["setup"],
+      testDir: "src/ui/tests/sales-portal",
+    },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"], headless: true },
+    },
+],
 
     // {
     //   name: 'firefox',
@@ -78,7 +95,7 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
+  
 
   /* Run your local dev server before starting the tests */
   // webServer: {
@@ -87,3 +104,4 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+

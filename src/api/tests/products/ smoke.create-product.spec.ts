@@ -21,6 +21,7 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { getAllProductSchema } from "data/schemas/products/allProduct.schema";
+import { TAGS } from "data/tags";
 
 async function toAppResponse(res: APIResponse) {
   return {
@@ -50,7 +51,10 @@ test.describe("[API] [Smoke] [Create Product]", () => {
   });
 
   //Sign In
-  test("Should login with valid credentials", async ({ request }) => {
+  test("Should login with valid credentials", {
+      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API]
+    },
+    async ({ request }) => {
     // Sign In
     const loginResponse = await request.post(
       apiConfig.baseURL + apiConfig.endpoints.login,

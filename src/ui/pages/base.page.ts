@@ -27,4 +27,10 @@ export abstract class BasePage {
       body: (await response.json()) as U,
     };
   }
+
+    async getAuthToken() {
+    const token = (await this.page.context().cookies()).find((c) => c.name === "Authorization")!.value;
+    return token;
+  }
+  
 }

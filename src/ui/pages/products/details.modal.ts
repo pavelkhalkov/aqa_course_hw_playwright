@@ -1,6 +1,7 @@
 import { IProductDetails } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
+import { logStep } from "utils/report/logStep.utils";
 
 export class ProductDetailsModal extends SalesPortalPage {
   readonly uniqueElement = this.page.locator("#ProductDetailsModal");
@@ -11,18 +12,20 @@ export class ProductDetailsModal extends SalesPortalPage {
  
   readonly productValue = this.uniqueElement.locator("p");
 
+  @logStep("Click close button on product details modal from")
   async clickClose() {
     await this.closeButton.click();
   }
 
+  @logStep("Click cancel button on product details modal")
   async clickCancel() {
     await this.cancelButton.click();
   }
-
+@logStep("Click edit button on product details modal")
   async clickEdit() {
     await this.editButton.click();
   }
-
+@logStep("Get data on product details modal")
   async getData(): Promise<IProductDetails> {
     const [name, amount, price, manufacturer, createdOn, notes] = await this.productValue.allInnerTexts();
 

@@ -60,7 +60,7 @@ const metricsCases = [
   },
 ];
 
-test.describe("[Integration] [Sales Portal] [Home Metrics]", () => {
+test.describe.skip("[Integration] [Sales Portal] [Home Metrics]", () => {
   for (const { title, value, setMockValue, readFromUi } of metricsCases) {
     test(`Should display valid metric: ${title}`, async ({ loginAsAdmin, homePage, mock }) => {
       

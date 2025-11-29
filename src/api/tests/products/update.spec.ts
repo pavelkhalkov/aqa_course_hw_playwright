@@ -4,6 +4,7 @@ import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products]", () => {
   let id = "";
@@ -13,7 +14,11 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     await productsApiService.delete(token, id);
   });
 
-  test("Update product", async ({ loginApiService, productsApiService, productsApi }) => {
+  test("Update product",  {
+    tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.API, TAGS.PRODUCTS]
+  },
+    
+    async ({ loginApiService, productsApiService, productsApi }) => {
     //TODO: Preconditions
     token = await loginApiService.loginAsAdmin();
     const createdProduct = await productsApiService.create(token);

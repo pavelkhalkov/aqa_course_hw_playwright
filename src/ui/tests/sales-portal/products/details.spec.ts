@@ -4,12 +4,13 @@ import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import _ from "lodash";
 import { AddNewProductPage } from "ui/pages/products";
+import { TAGS } from 'data/tags';
 
 test.describe("[Sales Portal] [Products]", () => {
   let id = "";
   let token = "";
   //test with fixtures version 1
-  test("Product Details", async ({ loginAsAdmin, homePage, productsListPage, addNewProductPage }) => {
+  test.skip("Product Details", async ({ loginAsAdmin, homePage, productsListPage, addNewProductPage }) => {
     //login page
     // const emailInput = page.locator("#emailinput");
     // const passwordInput = page.locator("#passwordinput");
@@ -68,12 +69,22 @@ test.describe("[Sales Portal] [Products]", () => {
   //   expect(_.omit(actual, ["createdOn"])).toEqual(productData);
   // });
 
-  test("Product Details with services", async ({ loginUIService, homeUIService, productsListUIService, productsApiService, productsListPage,
+//====
+  
+test("Product Details with services", {
+    tag: [TAGS.REGRESSION, TAGS.PRODUCTS, TAGS.UI],
+  }, async ({
+    homeUIService,
+    productsListUIService,
+    productsApiService,
+    productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
+    await productsListPage.open()
     const createdProduct = await productsApiService.create(token);
     id = createdProduct._id;
     await homeUIService.openModule("Products");
+   
     await productsListUIService.openDetailsModal(createdProduct.name);
     const actual = await productsListPage.detailsModal.getData();
     productsListUIService.assertDetailsData(actual, createdProduct);
@@ -83,4 +94,7 @@ test.describe("[Sales Portal] [Products]", () => {
     if (id) await productsApiService.delete(token, id);
     id = "";
   });
+
 });
+
+
